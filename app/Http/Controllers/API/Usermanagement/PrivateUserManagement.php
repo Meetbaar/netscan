@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: timpasternak
  * Date: 27.07.18
- * Time: 11:36
+ * Time: 14:05
  */
 
 namespace App\Http\Controllers\API\Usermanagement;
@@ -11,11 +11,9 @@ namespace App\Http\Controllers\API\Usermanagement;
 
 use App\Http\Controllers\Controller;
 
-class PublicUserManagement extends Controller
+class PrivateUserManagement extends Controller
 {
-
-    public function postUserLogin() {
+    public function postUserCreate() {
 
     }
-
 }
