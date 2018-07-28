@@ -28,6 +28,6 @@ class ChangeLog extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists("changelog");
     }
 }
