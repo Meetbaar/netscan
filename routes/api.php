@@ -19,11 +19,16 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 Route::middleware("api")->group( function() {
-    Route::post("/user/login", "App\\Http\\Controllers\\API\\Usermanagement\\PublicUserManagement@postUserLogin");
+    Route::post("/user/login", "API\Usermanagement\PublicUserManagement@postUserLogin");
+    Route::get("/actions/{uid?}", "API\ActionLog\PrivateActionLog@getActionLog");
+
+    Route::post("/setup", "API\Setup\PublicSetup@postStartSetup");
 });
 
 Route::middleware("auth:api")->group(function(){
 
-    Route::post("/user", "App\\Http\\Controllers\\API\\Usermanagement\\PrivateUserManagement@postUserCreate");
+    Route::post("/user", "API\Usermanagement\PrivateUserManagement@postUserCreate");
+
+
 
 });
