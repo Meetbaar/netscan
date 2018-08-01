@@ -10,11 +10,17 @@ namespace App\Components\UserManagement\User;
 
 
 use App\Components\Core\ActionLog\ActionLog;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Passport\HasApiTokens;
 
-class UserModel extends  Model
+
+class UserModel extends  Authenticatable
 {
+    use HasApiTokens, Notifiable;
+    protected $primaryKey = "uid";
+
     protected $hidden = [
         'password', 'remember_token',
     ];
@@ -33,6 +39,7 @@ class UserModel extends  Model
 
         return $user;
     }
+
 
 
 

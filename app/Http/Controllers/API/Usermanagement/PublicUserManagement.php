@@ -13,6 +13,7 @@ use App\Components\API\APIResponseBuilder;
 use App\Components\UserManagement\User\UserAction;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class PublicUserManagement extends Controller
@@ -40,4 +41,14 @@ class PublicUserManagement extends Controller
         }
     }
 
+    public function getUserLogin() {
+
+        $api = new APIResponseBuilder();
+
+        if(Auth::check()) {
+            return $api->makePositiveResponse(Auth::user())->makeResponse();
+        } else {
+            return $api->makeNegativeResponse("User not logged in.")->makeResponse();
+        }
+    }
 }

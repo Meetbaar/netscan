@@ -20,6 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::middleware("api")->group( function() {
     Route::post("/user/login", "API\Usermanagement\PublicUserManagement@postUserLogin");
+    Route::get("/user/login", "API\Usermanagement\PublicUserManagement@getUserLogin");
     Route::get("/actions/{uid?}", "API\ActionLog\PrivateActionLog@getActionLog");
 
     Route::post("/setup", "API\Setup\PublicSetup@postStartSetup");
@@ -28,6 +29,7 @@ Route::middleware("api")->group( function() {
 Route::middleware("auth:api")->group(function(){
 
     Route::post("/user", "API\Usermanagement\PrivateUserManagement@postUserCreate");
+    Route::get("/users/{username?}", "API\Usermanagement\PrivateUserManagement@getUsers");
 
 
 

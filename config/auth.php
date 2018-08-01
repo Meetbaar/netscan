@@ -38,12 +38,12 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'userModel',
         ],
 
         'api' => [
-            'driver' => 'token',
-            'provider' => 'users',
+            'driver' => 'passport',
+            'provider' => 'userModel',
         ],
     ],
 
@@ -69,6 +69,10 @@ return [
             'driver' => 'eloquent',
             'model' => App\User::class,
         ],
+        'userModel' => [
+            'driver'=>'eloquent',
+            'model' => \App\Components\UserManagement\User\UserModel::class
+        ]
 
         // 'users' => [
         //     'driver' => 'database',

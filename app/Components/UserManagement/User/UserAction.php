@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 class UserAction
 {
     public $actionStatus = true;
+
     public function UserLogin($username, $password) {
         $credentials = [
             'username'=>$username,
@@ -34,7 +35,7 @@ class UserAction
 
             ActionLog::addLog("Userlogin failed for: $username", 0);
             $this->actionStatus = false;
-            return "Username or Password wrong.";
+            return ["message"=>"Username or Password wrong."];
         }
     }
 }

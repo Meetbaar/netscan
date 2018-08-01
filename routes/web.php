@@ -14,3 +14,14 @@
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/test', function() {
+    return view("test");
+});
+Route::post("/login", function(\Illuminate\Http\Request $request ){
+    if(\Illuminate\Support\Facades\Auth::attempt([
+        "username"=> $request->input("username"),
+        "password"=> $request->input("password")
+    ])) {
+        return true;
+    }
+});
