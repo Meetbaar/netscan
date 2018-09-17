@@ -15,10 +15,22 @@ import VueAxios from 'vue-axios';
 import Auth from "./packages/auth/Auth.js"
 import askApp from "./packages/askApp/askApp"
 
+
+
+
+
+
+
+
 import StartPoint from './components/StartPoint'
 import NotFoundView from './components/error'
 import Login from './functions/auth/login'
 import UserMainPage from "./components/dashboard/Users/users"
+
+import SubnetMainPage from "./components/dashboard/Subnets/subnets"
+import DashboardPage from "./components/dashboard/Dashboard/Dashboard"
+
+
 
 import MainLayout from "./components/dashboard/Layouts/Main"
 /**
@@ -46,18 +58,27 @@ const routes = [
     { path: '/dashboard', component: MainLayout, children: [
             {
                 path: '/',
-                component: StartPoint,
+                component: DashboardPage,
                 name: "dashboard",
                 meta: {
                     title: "Dashboard"
                 }
             },
+
             {
                 path: '/users',
                 component: UserMainPage,
                 name: "users",
                 meta: {
                     title: "Users"
+                }
+            },
+            {
+                path: '/subnets',
+                component: SubnetMainPage,
+                name: "subnets",
+                meta: {
+                    title: "Subnets"
                 }
             },
         ],

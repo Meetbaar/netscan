@@ -27,7 +27,7 @@ Route::get("/test/", function() {
     $nmap = new \Nmap\Nmap();
 
     //$result = $nmap->scan([ '10.69.11.254' ]);
-    $sub = new IPv4\SubnetCalculator('10.69.10.0', 24);
+    $sub = new IPv4\SubnetCalculator('10.0.0.0', 24);
 
     //calculate minIP
     $minIP = ip2long($sub->getMinHost());
@@ -35,38 +35,39 @@ Route::get("/test/", function() {
     echo "Max-IP: ".$minIP."<br>";
     echo "Max-IP: ".$maxIP."<br>";
     for ($ip = $minIP; $ip <= $maxIP; $ip++) {
-        $result = $nmap->scan([ long2ip($ip)]);
-        if(empty($result[0])) {
-            $state = "down";
+        unset($state);
+        try{
+            $result = $nmap->scan([ long2ip($ip)]);
+        } catch (Exception $exception) {
+            $state = "error";
         }
-        else {
-            $state = $result[0]->getState();
+        if(empty($state)) {
+            if(empty($result[0])) {
+                $state = "down";
+            }
+            else {
+                $state = $result[0]->getState();
+            }
         }
+
 
         $server = new \App\ServerStatus();
         $server->ip = long2ip($ip);
         $server->status = $state;
         $server->save();
-        //echo "IP: ".long2ip($ip)." Status: ".$state."<br>";
-        //echo $ip."<br>";
     }
 
-    //$result = $nmap->scan([ long2ip($ip)]);
+});
 
-    //if(empty($result[0])) {
-    //    $state = "down";
-    //}
-    //else {
-    //    $state = $result[0]->getState();
-    //}
-    //echo "<br>IP: ".long2ip($ip)." Status: ".$state;
+Route::get("reset", function () {
 
-    //echo "<pre>";
-    //print_r($result);
-    //echo "</pre>";
+    $subnet = new \App\Subnet();
+    $subnet->name = "Testnetz";
+    $subnet->subnet = "10.0.0.0/16";
+    $subnet->creator = 31;
+    $subnet->save();
 
+    $job_id = dispatch((new \App\Jobs\SubnetCreationJob($subnet))->onQueue("2"));
 
 });
-Route::get("test/servers", function () {
-    return \App\ServerStatus::get();
-});
+

@@ -81,7 +81,7 @@
 
                     this.$Loading.finish()
                     this.loginLoading = false;
-                    if(error.response.data  != null) {
+                    if(error.response != null && error.response.data != null) {
 
                         this.$Message.error("Login failed");
 
