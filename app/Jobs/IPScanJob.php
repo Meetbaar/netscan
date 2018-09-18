@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\IPAdress;
+use App\JobLog;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -31,8 +32,13 @@ class IPScanJob implements ShouldQueue
     public function handle()
     {
         try {
+            $job_id = $this->job->getJobId();
+            JobLog::addJobLog($job_id, "Scanning ".$this->ip->adress.".");
+
             $ip = $this->ip->adress;
+            JobLog::startJob($job_id);
             $nmap = new \Nmap\Nmap();
+            JobLog::setProgress($job_id, 10);
             $data = [];
             $error = false;
             try {
@@ -56,12 +62,15 @@ class IPScanJob implements ShouldQueue
                 $data['status'] = $result[0]->getState();
 
             }
+            $hostname = gethostbyaddr($ip);
 
+            \App\IPAdress::updateIP($this->ip->id, $data['ports'], $data['status'], $hostname);
+            JobLog::endJob($job_id);
 
-            \App\IPAdress::updateIP($this->ip->id, $data['ports'], $data['status']);
         }
         catch(\Exception $exception) {
             echo $exception;
         }
+
     }
 }

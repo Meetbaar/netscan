@@ -15,6 +15,7 @@ import VueAxios from 'vue-axios';
 import Auth from "./packages/auth/Auth.js"
 import askApp from "./packages/askApp/askApp"
 
+import VueTimeago from 'vue-timeago'
 
 
 
@@ -28,6 +29,7 @@ import Login from './functions/auth/login'
 import UserMainPage from "./components/dashboard/Users/users"
 
 import SubnetMainPage from "./components/dashboard/Subnets/subnets"
+import IPAdressPage from "./components/dashboard/Subnets/adresses"
 import DashboardPage from "./components/dashboard/Dashboard/Dashboard"
 
 
@@ -41,6 +43,7 @@ import MainLayout from "./components/dashboard/Layouts/Main"
 
 Vue.component('startpoint', require('./components/StartPoint.vue'));
 Vue.use(VueRouter);
+Vue.use(require('vue-moment'));
 
 const routes = [
     { path:'/', component: StartPoint,name: "startpoint",
@@ -79,6 +82,14 @@ const routes = [
                 name: "subnets",
                 meta: {
                     title: "Subnets"
+                }
+            },
+            {
+                path: '/subnets/:id',
+                component: IPAdressPage,
+                name: "subnetIP",
+                meta: {
+                    title: "IP-Adresses"
                 }
             },
         ],

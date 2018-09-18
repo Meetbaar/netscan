@@ -32,7 +32,7 @@ Route::get("reset", function () {
 
     $subnet = new \App\Subnet();
     $subnet->name = "Testnetz";
-    $subnet->subnet = "10.69.0.0/16";
+    $subnet->subnet = "10.46.0.0/16";
     $subnet->creator = 31;
     $subnet->save();
 
@@ -41,5 +41,6 @@ Route::get("reset", function () {
 });
 
 Route::get("testAllJobs", function () {
-    return \App\JobLog::getAllJobs();
+    //return gethostbyaddr("134.255.244.227");
+    \App\Jobs\ReenterScanJob::dispatch()->onQueue(1);
 });

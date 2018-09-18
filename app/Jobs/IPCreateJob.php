@@ -44,8 +44,8 @@ class IPCreateJob implements ShouldQueue
         {
             echo $exception;
         }
-
-        dispatch((new IPScanJob($ipAdress))->onQueue("4"));
+        $offset = rand(0,1);
+        dispatch((new IPScanJob($ipAdress))->onQueue(4+$offset));
 
     }
 }

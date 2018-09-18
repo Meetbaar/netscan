@@ -38,38 +38,38 @@ class JobLog extends Model
         $job->save();
     }
 
-    static function getRunningJobs($minutes = 60)
+    static function getRunningJobs($minutes = 60, $limit = 100)
     {
-        $results = self::where('status', "running")->whereDate("updated_at", ">=", Carbon::now()->subMinutes($minutes))->get();
+        $results = self::where('status', "running")->where("updated_at", ">", Carbon::now()->subMinutes(intval($minutes))->toDateTimeString())->orderBy('updated_at', 'desc')->take($limit)->get();
         return $results;
     }
-    static function getDoneJobs($minutes = 60)
+    static function getDoneJobs($minutes = 60, $limit = 100)
     {
-        $results = self::where('status', "done")->whereDate("updated_at", ">=", Carbon::now()->subMinutes($minutes))->get();
+        $results = self::where('status', "done")->where("updated_at", ">", Carbon::now()->subMinutes(intval($minutes))->toDateTimeString())->orderBy('updated_at', 'desc')->take($limit)->get();
         return $results;
     }
-    static function getScheduledJobs($minutes = 60)
+    static function getScheduledJobs($minutes = 60, $limit = 100)
     {
-        $results = self::where('status', "scheduled")->whereDate("updated_at", ">=", Carbon::now()->subMinutes($minutes))->get();
+        $results = self::where('status', "scheduled")->where("updated_at", ">", Carbon::now()->subMinutes(intval($minutes))->toDateTimeString())->orderBy('updated_at', 'desc')->take($limit)->get();
         return $results;
     }
-    static function getErrorJobs($minutes = 60)
+    static function getErrorJobs($minutes = 60, $limit = 100)
     {
-        $results = self::where('status', "error")->whereDate("updated_at", ">=", Carbon::now()->subMinutes($minutes))->get();
+        $results = self::where('status', "error")->where("updated_at", ">", Carbon::now()->subMinutes(intval($minutes))->toDateTimeString())->orderBy('updated_at', 'desc')->take($limit)->get();
         return $results;
     }
 
     static function getAllJobs($minutes = 60) {
         $returnJobs = [];
-        $returnJobs[] = self::getErrorJobs($minutes);
-        $returnJobs[] = self::getRunningJobs($minutes);
-        $returnJobs[] = self::getScheduledJobs($minutes);
-        $returnJobs[] = self::getDoneJobs($minutes);
+        $returnJobs[] = self::getErrorJobs($minutes,2);
+        $returnJobs[] = self::getRunningJobs($minutes,5);
+        $returnJobs[] = self::getScheduledJobs($minutes,5);
+        $returnJobs[] = self::getDoneJobs($minutes,3);
         return $returnJobs;
     }
 
     static function getJobsWithStatus($status, $minutes = 60) {
-        $results = self::where('status', "error")->whereDate("updated_at", ">=", Carbon::now()->subMinutes($minutes))->get();
+        $results = self::where('status', $status)->where("updated_at", ">=", Carbon::now()->subMinutes($minutes)->toDateTimeString())->get();
         return $results;
 
     }

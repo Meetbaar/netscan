@@ -76,7 +76,13 @@
                                 h('AtButton', {
                                     props: {
                                         size: 'small',
-                                        hollow: true
+                                        hollow: true,
+
+                                    },
+                                    on: {
+                                        click: () => {
+                                            this.$router.push({path: "/subnets/"+params.item.id});
+                                        },
                                     },
                                     style: {
                                         marginRight: '8px'
@@ -86,7 +92,7 @@
                                 h('AtButton', {
                                     props: {
                                         size: 'small',
-                                        hollow: true
+                                        hollow: true,
                                     },
                                     on: {
 

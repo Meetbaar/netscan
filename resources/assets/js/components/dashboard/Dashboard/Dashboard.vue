@@ -37,10 +37,10 @@
                     <div class="col-lg-12">
                         <div class="row">
                             <div class="col-lg-12" v-for="item in this.queues">
-                                <at-card style="width: 100%;" class="justify-content-center">
+                                <at-card style="width: 100%;" class="justify-content-center" :loading="cardLoading">
                                     <h4 slot="title">Queue #{{ item.id}}</h4>
                                     <div>
-                                        <h3>Current Rate: {{item.change/2.5}}<small>/sec.</small></h3>
+                                        <h3>Current Rate: {{item.change/2.5}}<small> Items/sec.</small></h3>
                                         <h6>Total Items: {{item.load}}</h6>
 
                                     </div>
@@ -105,6 +105,7 @@
                         this.queues[index] = item;
 
                     });
+                    this.cardLoading = false;
                 }).catch((error)=>{
                     this.$Message.error("There was an error communicating with the backend. Please try again later.")
                     console.log(error);
@@ -221,11 +222,13 @@
                                     },
 
                                 },status)
-                            ])                        }
+                            ])
+                        }
                     }
                 ],
-                queues: [],
+                queues: [{},{},{},{},{}],
                 ipadresses: [],
+                cardLoading: true
             }
         }
     }

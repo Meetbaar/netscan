@@ -6,9 +6,9 @@
             </div>
             <div class="col-lg-21">
                 <at-menu mode="horizontal" router>
-                    <at-menu-item name="1" to="dashboard"><i class="icon icon-home"></i>Home</at-menu-item>
-                    <at-menu-item name="3" to="subnets"><i class="icon icon-globe"></i>Subnets</at-menu-item>
-                    <at-menu-item name="2" to="users"><i class="icon icon-users"></i>Users</at-menu-item>
+                    <at-menu-item name="1" to="/dashboard"><i class="icon icon-home"></i>Home</at-menu-item>
+                    <at-menu-item name="3" to="/subnets"><i class="icon icon-globe"></i>Subnets</at-menu-item>
+                    <at-menu-item name="2" to="/users"><i class="icon icon-users"></i>Users</at-menu-item>
                 </at-menu>
 
             </div>
