@@ -1,23 +1,52 @@
 <template>
     <div>
         <div class="row justify-content-center">
-            <div class="col-lg-12">
+            <div class="col-lg-20">
                 <div class="row">
-                    <div class="col-lg-20">
+                    <div class="col-lg-24">
                         <h1>System Dashboard</h1>
                     </div>
                 </div>
                 <hr>
                 <div class="row">
+                    <div class="col-lg-24">
+                        <h3>IP Stats</h3><br>
+
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-lg-12">
-                        <div class="card card-default">
-                            <div class="card-header">JobList</div>
+                        <at-table :columns="ipTableLayout" :data="ipadresses"/>
 
-                            <div class="card-body">
 
-                        <at-progress :percent="50"></at-progress>
-                        <at-table :columns="columns1" :data="data1"></at-table>
-                        </div>
+                    </div>
+                </div>
+<br>
+                <div class="row">
+                    <div class="col-lg-24">
+                        <h3>Queue Stats</h3><br>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                                <at-table :columns="tableLayoutJobStats" :data="job"/>
+
+
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <div class="col-lg-12" v-for="item in this.queues">
+                                <at-card style="width: 100%;" class="justify-content-center">
+                                    <h4 slot="title">Queue #{{ item.id}}</h4>
+                                    <div>
+                                        <h3>Current Rate: {{item.change/2.5}}<small>/sec.</small></h3>
+                                        <h6>Total Items: {{item.load}}</h6>
+
+                                    </div>
+                                </at-card>
+                                <br>
+                            </div>
                         </div>
 
                     </div>
@@ -34,73 +63,172 @@
 </template>
 <script>
     export default {
-        data () {
+        mounted() {
+            this.loadJobs();
+            this.loadQueueLoad();
+            this.loadIPList()
+
+            setInterval(function () {
+                this.loadJobs();
+                this.loadQueueLoad();
+                this.loadIPList()
+
+            }.bind(this), 2500);
+
+        },
+        methods: {
+
+            loadJobs(){
+                let resultPromise = this.$askApp.makeProtectedGET("api/jobs/list")
+                resultPromise.then((data)=>{
+                    this.job = data.data.response;
+                }).catch((error)=>{
+                    this.$Message.error("There was an error communicating with the backend. Please try again later.")
+                    console.log(error);
+
+                });
+            },
+            loadQueueLoad(){
+                let resultPromise = this.$askApp.makeProtectedGET("api/jobs/load")
+                resultPromise.then((data)=>{
+
+                    data.data.response.forEach((item, index)=>{
+                        let current = this.queues[index];
+
+                        if(!current || (!current.old && current.old !== 0)) {
+                            current = {id: "", load: "0", old: "0", change: ""};
+
+                        }
+                        let change = parseInt(item.load) - parseInt(current.old);
+                        item.old = item.load;
+                        item.change = change;
+                        this.queues[index] = item;
+
+                    });
+                }).catch((error)=>{
+                    this.$Message.error("There was an error communicating with the backend. Please try again later.")
+                    console.log(error);
+
+                });
+            },
+            loadIPList(){
+                let resultPromise = this.$askApp.makeProtectedGET("api/ips/latest")
+                resultPromise.then((data)=>{
+
+                    this.ipadresses = data.data.response;
+
+                }).catch((error)=>{
+                    this.$Message.error("There was an error communicating with the backend. Please try again later.")
+                    console.log(error);
+
+                });
+            },
+
+
+        },
+        data(){
             return {
-                columns1: [
+                job:[],
+                tableLayoutJobStats: [
                     {
                         title: 'Name',
-                        key: 'name'
+                        render: (h, params) => {
+                            return h('div', [
+                                "["+params.item.job_id+"] "+params.item.log
+                            ])
+                        }
                     },
                     {
-                        title: 'Age',
-                        key: 'age'
+                        title: 'Status',
+                        render: (h, params) => {
+                            let status = params.item.status;
+                            let color ="";
+                            if(status ==="running") {
+                                color ="success"
+                            } else if(status === "scheduled") {
+                                color = "primary";
+                            } else if(status === "done") {
+                                color = "default";
+                            } else if(status === "error") {
+                                color = "error";
+                            }
+                            return h('div', [
+                                h("at-tag", {
+                                    props: {
+                                        color: color,
+                                    },
+
+                                },params.item.status)
+                            ])
+                        }
                     },
                     {
-                        title: 'Address',
-                        key: 'address'
+                        title: 'Progress',
+                        render: (h, params) => {
+                            return h('div', [
+                                h('at-progress', {
+                                    props: {
+                                        percent: params.item.progress,
+                                    }
+                                }),
+                            ])
+                        }
                     }
                 ],
-                data1: [
+                tableLayoutQueueLoad: [
                     {
-                        name: 'Stephen Curry',
-                        age: 18,
-                        address: 'Shenzhen Shi, Baoan Qu'
+                        title: 'Name',
+                        render: (h, params) => {
+                            return h('div', [
+                                params.item.id
+                            ])
+                        }
                     },
                     {
-                        name: 'Lebron James',
-                        age: 25,
-                        address: 'Gangding, Tianhe, Guangzhou'
-                    },
-                    {
-                        name: 'Kobe Bryant',
-                        age: 24,
-                        address: 'Pudong, Shanghai'
-                    },
-                    {
-                        name: 'Kevin Durant',
-                        age: 22,
-                        address: 'Shen Nan Da Dao, Nanshan Qu, Shenzhen Shi'
-                    },
-                    {
-                        name: 'Russell Westbrook',
-                        age: 21,
-                        address: 'Chaoyang District, Beijing'
-                    },
-                    {
-                        name: 'Tim Duncan',
-                        age: 26,
-                        address: 'The Mixc of Shenzhen City '
-                    },
-                    {
-                        name: 'Tony Parker',
-                        age: 25,
-                        address: 'Shenzhen Book City'
-                    },
-                    {
-                        name: 'Kyrie Irving',
-                        age: 20,
-                        address: 'Guangzhou Higher Education Mega Center'
-                    },
-                    {
-                        name: 'Isaiah Thomas',
-                        age: 19,
-                        address: 'Chaoyang District, Beijing'
+                        title: 'Progress',
+                        render: (h, params) => {
+                            return h('div', [
+                                params.item.change
+                            ])
+                        }
                     }
-                ]
+                ],
+                ipTableLayout: [
+                    {
+                        title: 'Adress',
+                        key: "adress"
+                    },
+                    {
+                        title: 'Subnet',
+                        key: "subnet_name"
+                    },
+                    {
+                        title: 'Status',
+                        render: (h, params) => {
+                            let status = params.item.status;
+                            let color ="";
+                            if(status ==="up") {
+                                color ="success"
+                            } else if(status === "down") {
+                                color = "default";
+                            } else if(status === "error") {
+                                color = "error";
+                            }
+                            return h('div', [
+                                h("at-tag", {
+                                    props: {
+                                        color: color,
+                                    },
+
+                                },status)
+                            ])                        }
+                    }
+                ],
+                queues: [],
+                ipadresses: [],
             }
         }
     }
 </script>
-
 <style lang="scss">
 </style>

@@ -31,6 +31,11 @@ Route::middleware("auth:api")->group(function(){
     Route::post("/user", "API\Usermanagement\PrivateUserManagement@postUserCreate");
     Route::get("/users/{username?}", "API\Usermanagement\PrivateUserManagement@getUsers");
 
+    Route::get("/jobs/list", "API\Dashboard\PrivateDashboard@getJobList");
+    Route::get("/jobs/load", "API\Dashboard\PrivateDashboard@getQueueLoad");
+    Route::get("/subnets/", "API\Subnets\PrivateSubnets@getSubnets");
+    Route::get("/ips/latest/", "API\IPAdress\PrivateIPAdress@getLatestChangedIPs");
+
 
 
 });

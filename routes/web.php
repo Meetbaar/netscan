@@ -24,38 +24,7 @@ Route::post("/login", function(\Illuminate\Http\Request $request ){
 });
 
 Route::get("/test/", function() {
-    $nmap = new \Nmap\Nmap();
 
-    //$result = $nmap->scan([ '10.69.11.254' ]);
-    $sub = new IPv4\SubnetCalculator('10.0.0.0', 24);
-
-    //calculate minIP
-    $minIP = ip2long($sub->getMinHost());
-    $maxIP = ip2long($sub->getMaxHost());
-    echo "Max-IP: ".$minIP."<br>";
-    echo "Max-IP: ".$maxIP."<br>";
-    for ($ip = $minIP; $ip <= $maxIP; $ip++) {
-        unset($state);
-        try{
-            $result = $nmap->scan([ long2ip($ip)]);
-        } catch (Exception $exception) {
-            $state = "error";
-        }
-        if(empty($state)) {
-            if(empty($result[0])) {
-                $state = "down";
-            }
-            else {
-                $state = $result[0]->getState();
-            }
-        }
-
-
-        $server = new \App\ServerStatus();
-        $server->ip = long2ip($ip);
-        $server->status = $state;
-        $server->save();
-    }
 
 });
 
@@ -63,7 +32,7 @@ Route::get("reset", function () {
 
     $subnet = new \App\Subnet();
     $subnet->name = "Testnetz";
-    $subnet->subnet = "10.0.0.0/16";
+    $subnet->subnet = "10.69.0.0/16";
     $subnet->creator = 31;
     $subnet->save();
 
@@ -71,3 +40,6 @@ Route::get("reset", function () {
 
 });
 
+Route::get("testAllJobs", function () {
+    return \App\JobLog::getAllJobs();
+});

@@ -30464,14 +30464,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     mounted: function mounted() {
@@ -30508,17 +30500,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "container" }, [
       _c("div", { staticClass: "row justify-content-center" }, [
-        _c("div", { staticClass: "col-md-8" }, [
-          _c("div", { staticClass: "card card-default" }, [
-            _c("div", { staticClass: "card-header" }, [_vm._v("Loading...")]),
-            _vm._v(" "),
-            _c("div", { staticClass: "card-body" }, [
-              _vm._v(
-                "\n                    Loading... Please wait.\n\n                "
-              )
-            ])
-          ])
-        ])
+        _c("div", { staticClass: "col-md-8" }, [_vm._v("\nw            ")])
       ])
     ])
   }
@@ -31278,7 +31260,7 @@ var render = function() {
     _c("div", { staticClass: "row justify-content-center" }, [
       _c(
         "div",
-        { staticClass: "col-lg-12" },
+        { staticClass: "col-lg-20   " },
         [
           _c("div", { staticClass: "row" }, [
             _vm._m(0),
@@ -31665,14 +31647,14 @@ var render = function() {
                 _vm._v("Home")
               ]),
               _vm._v(" "),
-              _c("at-menu-item", { attrs: { name: "2", to: "users" } }, [
-                _c("i", { staticClass: "icon icon-users" }),
-                _vm._v("Users")
-              ]),
-              _vm._v(" "),
               _c("at-menu-item", { attrs: { name: "3", to: "subnets" } }, [
                 _c("i", { staticClass: "icon icon-globe" }),
                 _vm._v("Subnets")
+              ]),
+              _vm._v(" "),
+              _c("at-menu-item", { attrs: { name: "2", to: "users" } }, [
+                _c("i", { staticClass: "icon icon-users" }),
+                _vm._v("Users")
               ])
             ],
             1
@@ -31829,18 +31811,71 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     mounted: function mounted() {
-        this.loadData();
+        this.loadSubnet();
     },
 
     methods: {
-        loadData: function loadData() {}
+        loadSubnet: function loadSubnet() {
+            var _this = this;
+
+            var resultPromise = this.$askApp.makeProtectedGET("api/subnets/");
+            resultPromise.then(function (data) {
+                _this.subnets = data.data.response;
+            }).catch(function (error) {
+                _this.$Message.error("There was an error communicating with the backend. Please try again later.");
+                console.log(error);
+            });
+        }
     },
     data: function data() {
-        return {};
+        return {
+            subnets: [],
+            tableLayoutSubnet: [{
+                title: 'ID',
+                key: "id"
+            }, {
+                title: 'Name',
+                key: "name"
+            }, {
+                title: 'Subnet',
+                key: "subnet"
+            }, {
+                title: 'Start',
+                key: "start"
+            }, {
+                title: 'End',
+                key: "end"
+            }, {
+                title: 'Creator',
+                key: "creator_name"
+            }, {
+                title: '# of IPv4',
+                key: "size"
+            }, {
+                title: 'Actions',
+                render: function render(h, params) {
+                    return h('div', [h('AtButton', {
+                        props: {
+                            size: 'small',
+                            hollow: true
+                        },
+                        style: {
+                            marginRight: '8px'
+                        }
+
+                    }, 'View IPv4 Adresses'), h('AtButton', {
+                        props: {
+                            size: 'small',
+                            hollow: true
+                        },
+                        on: {}
+                    }, 'Edit Subnet')]);
+                }
+            }]
+        };
     }
 });
 
@@ -31856,44 +31891,15 @@ var render = function() {
     _c("div", { staticClass: "row justify-content-center" }, [
       _c(
         "div",
-        { staticClass: "col-lg-12" },
+        { staticClass: "col-lg-20" },
         [
-          _c("div", { staticClass: "row" }, [
-            _vm._m(0),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "col-lg-3" },
-              [
-                _c(
-                  "at-button",
-                  {
-                    attrs: {
-                      type: "success",
-                      hollow: "",
-                      icon: "icon-plus",
-                      size: "small"
-                    },
-                    on: { click: _vm.addSubnet }
-                  },
-                  [_vm._v("Add Subnet")]
-                )
-              ],
-              1
-            )
-          ]),
+          _vm._m(0),
           _vm._v(" "),
           _c("hr"),
           _vm._v(" "),
-          _vm.loading
-            ? _c("at-alert", {
-                staticStyle: { "margin-bottom": "10px" },
-                attrs: {
-                  message: "Please wait while we fetch the data...",
-                  type: "info"
-                }
-              })
-            : _vm._e()
+          _c("at-table", {
+            attrs: { columns: _vm.tableLayoutSubnet, data: _vm.subnets }
+          })
         ],
         1
       )
@@ -31905,8 +31911,10 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-lg-20" }, [
-      _c("h1", [_vm._v("Subnets")])
+    return _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-lg-20" }, [_c("h1", [_vm._v("Subnets")])]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-lg-3" })
     ])
   }
 ]
@@ -32050,57 +32058,174 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+    mounted: function mounted() {
+        this.loadJobs();
+        this.loadQueueLoad();
+        this.loadIPList();
+
+        setInterval(function () {
+            this.loadJobs();
+            this.loadQueueLoad();
+            this.loadIPList();
+        }.bind(this), 2500);
+    },
+
+    methods: {
+        loadJobs: function loadJobs() {
+            var _this = this;
+
+            var resultPromise = this.$askApp.makeProtectedGET("api/jobs/list");
+            resultPromise.then(function (data) {
+                _this.job = data.data.response;
+            }).catch(function (error) {
+                _this.$Message.error("There was an error communicating with the backend. Please try again later.");
+                console.log(error);
+            });
+        },
+        loadQueueLoad: function loadQueueLoad() {
+            var _this2 = this;
+
+            var resultPromise = this.$askApp.makeProtectedGET("api/jobs/load");
+            resultPromise.then(function (data) {
+
+                data.data.response.forEach(function (item, index) {
+                    var current = _this2.queues[index];
+
+                    if (!current || !current.old && current.old !== 0) {
+                        current = { id: "", load: "0", old: "0", change: "" };
+                    }
+                    var change = parseInt(item.load) - parseInt(current.old);
+                    item.old = item.load;
+                    item.change = change;
+                    _this2.queues[index] = item;
+                });
+            }).catch(function (error) {
+                _this2.$Message.error("There was an error communicating with the backend. Please try again later.");
+                console.log(error);
+            });
+        },
+        loadIPList: function loadIPList() {
+            var _this3 = this;
+
+            var resultPromise = this.$askApp.makeProtectedGET("api/ips/latest");
+            resultPromise.then(function (data) {
+
+                _this3.ipadresses = data.data.response;
+            }).catch(function (error) {
+                _this3.$Message.error("There was an error communicating with the backend. Please try again later.");
+                console.log(error);
+            });
+        }
+    },
     data: function data() {
         return {
-            columns1: [{
+            job: [],
+            tableLayoutJobStats: [{
                 title: 'Name',
-                key: 'name'
+                render: function render(h, params) {
+                    return h('div', ["[" + params.item.job_id + "] " + params.item.log]);
+                }
             }, {
-                title: 'Age',
-                key: 'age'
+                title: 'Status',
+                render: function render(h, params) {
+                    var status = params.item.status;
+                    var color = "";
+                    if (status === "running") {
+                        color = "success";
+                    } else if (status === "scheduled") {
+                        color = "primary";
+                    } else if (status === "done") {
+                        color = "default";
+                    } else if (status === "error") {
+                        color = "error";
+                    }
+                    return h('div', [h("at-tag", {
+                        props: {
+                            color: color
+                        }
+
+                    }, params.item.status)]);
+                }
             }, {
-                title: 'Address',
-                key: 'address'
+                title: 'Progress',
+                render: function render(h, params) {
+                    return h('div', [h('at-progress', {
+                        props: {
+                            percent: params.item.progress
+                        }
+                    })]);
+                }
             }],
-            data1: [{
-                name: 'Stephen Curry',
-                age: 18,
-                address: 'Shenzhen Shi, Baoan Qu'
+            tableLayoutQueueLoad: [{
+                title: 'Name',
+                render: function render(h, params) {
+                    return h('div', [params.item.id]);
+                }
             }, {
-                name: 'Lebron James',
-                age: 25,
-                address: 'Gangding, Tianhe, Guangzhou'
+                title: 'Progress',
+                render: function render(h, params) {
+                    return h('div', [params.item.change]);
+                }
+            }],
+            ipTableLayout: [{
+                title: 'Adress',
+                key: "adress"
             }, {
-                name: 'Kobe Bryant',
-                age: 24,
-                address: 'Pudong, Shanghai'
+                title: 'Subnet',
+                key: "subnet_name"
             }, {
-                name: 'Kevin Durant',
-                age: 22,
-                address: 'Shen Nan Da Dao, Nanshan Qu, Shenzhen Shi'
-            }, {
-                name: 'Russell Westbrook',
-                age: 21,
-                address: 'Chaoyang District, Beijing'
-            }, {
-                name: 'Tim Duncan',
-                age: 26,
-                address: 'The Mixc of Shenzhen City '
-            }, {
-                name: 'Tony Parker',
-                age: 25,
-                address: 'Shenzhen Book City'
-            }, {
-                name: 'Kyrie Irving',
-                age: 20,
-                address: 'Guangzhou Higher Education Mega Center'
-            }, {
-                name: 'Isaiah Thomas',
-                age: 19,
-                address: 'Chaoyang District, Beijing'
-            }]
+                title: 'Status',
+                render: function render(h, params) {
+                    var status = params.item.status;
+                    var color = "";
+                    if (status === "up") {
+                        color = "success";
+                    } else if (status === "down") {
+                        color = "default";
+                    } else if (status === "error") {
+                        color = "error";
+                    }
+                    return h('div', [h("at-tag", {
+                        props: {
+                            color: color
+                        }
+
+                    }, status)]);
+                }
+            }],
+            queues: [],
+            ipadresses: []
         };
     }
 });
@@ -32115,35 +32240,89 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", [
     _c("div", { staticClass: "row justify-content-center" }, [
-      _c("div", { staticClass: "col-lg-12" }, [
+      _c("div", { staticClass: "col-lg-20" }, [
         _vm._m(0),
         _vm._v(" "),
         _c("hr"),
         _vm._v(" "),
+        _vm._m(1),
+        _vm._v(" "),
         _c("div", { staticClass: "row" }, [
+          _c(
+            "div",
+            { staticClass: "col-lg-12" },
+            [
+              _c("at-table", {
+                attrs: { columns: _vm.ipTableLayout, data: _vm.ipadresses }
+              })
+            ],
+            1
+          )
+        ]),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _vm._m(2),
+        _vm._v(" "),
+        _c("div", { staticClass: "row" }, [
+          _c(
+            "div",
+            { staticClass: "col-lg-12" },
+            [
+              _c("at-table", {
+                attrs: { columns: _vm.tableLayoutJobStats, data: _vm.job }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
           _c("div", { staticClass: "col-lg-12" }, [
-            _c("div", { staticClass: "card card-default" }, [
-              _c("div", { staticClass: "card-header" }, [_vm._v("JobList")]),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "card-body" },
-                [
-                  _c("at-progress", { attrs: { percent: 50 } }),
-                  _vm._v(" "),
-                  _c("at-table", {
-                    attrs: { columns: _vm.columns1, data: _vm.data1 }
-                  })
-                ],
-                1
-              )
-            ])
+            _c(
+              "div",
+              { staticClass: "row" },
+              _vm._l(this.queues, function(item) {
+                return _c(
+                  "div",
+                  { staticClass: "col-lg-12" },
+                  [
+                    _c(
+                      "at-card",
+                      {
+                        staticClass: "justify-content-center",
+                        staticStyle: { width: "100%" }
+                      },
+                      [
+                        _c("h4", { attrs: { slot: "title" }, slot: "title" }, [
+                          _vm._v("Queue #" + _vm._s(item.id))
+                        ]),
+                        _vm._v(" "),
+                        _c("div", [
+                          _c("h3", [
+                            _vm._v(
+                              "Current Rate: " + _vm._s(item.change / 2.5)
+                            ),
+                            _c("small", [_vm._v("/sec.")])
+                          ]),
+                          _vm._v(" "),
+                          _c("h6", [
+                            _vm._v("Total Items: " + _vm._s(item.load))
+                          ])
+                        ])
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("br")
+                  ],
+                  1
+                )
+              })
+            )
           ])
         ])
       ])
     ]),
     _vm._v(" "),
-    _vm._m(1)
+    _vm._m(3)
   ])
 }
 var staticRenderFns = [
@@ -32152,8 +32331,30 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-lg-20" }, [
+      _c("div", { staticClass: "col-lg-24" }, [
         _c("h1", [_vm._v("System Dashboard")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-lg-24" }, [
+        _c("h3", [_vm._v("IP Stats")]),
+        _c("br")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-lg-24" }, [
+        _c("h3", [_vm._v("Queue Stats")]),
+        _c("br")
       ])
     ])
   },

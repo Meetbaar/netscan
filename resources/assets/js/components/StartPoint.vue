@@ -2,15 +2,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <div class="card card-default">
-                    <div class="card-header">Loading...</div>
-
-                    <div class="card-body">
-                        Loading... Please wait.
-
-                    </div>
-                </div>
-            </div>
+w            </div>
         </div>
     </div>
 </template>
