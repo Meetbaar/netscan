@@ -71,7 +71,7 @@ class PrivateIPAdress extends Controller
             $baseQuery->orderBy('id', 'desc');
 
         }
-        $resultSet = $baseQuery->take($limit)->get();
+        $resultSet = $baseQuery->where("subnet", $subnet)->take($limit)->get();
         foreach($resultSet as $adress) {
             $adress->open_ports = json_decode($adress->open_ports, true);
             $portCollection = [];

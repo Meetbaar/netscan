@@ -18,7 +18,7 @@
                 <div v-if="!compact">
                     <div class="row">
                         <div class="col-lg-24">
-                            <h2>Online IPv4</h2>
+                            <h2>Online IPv4: {{subnetDetails.countedIPs}}</h2>
                             <hr>
 
                         </div>
@@ -68,7 +68,7 @@
                 </div>
                 <div v-else>
                     <div class="row">
-                        <div class="col-lg-6 " v-for="item in this.onlineAdresses">
+                        <div class="col-lg-4 " v-for="item in this.onlineAdresses">
                             <h4 class="hostname compact" :class="item.status"> {{item.shortDomain}}</h4>
                         </div>
                     </div>

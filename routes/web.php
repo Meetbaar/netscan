@@ -32,7 +32,7 @@ Route::get("reset", function () {
 
     $subnet = new \App\Subnet();
     $subnet->name = "Testnetz";
-    $subnet->subnet = "10.46.0.0/16";
+    $subnet->subnet = "10.96.0.0/16";
     $subnet->creator = 31;
     $subnet->save();
 

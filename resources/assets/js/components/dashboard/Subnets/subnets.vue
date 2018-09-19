@@ -3,10 +3,25 @@
         <div class="row justify-content-center">
             <div class="col-lg-20">
                 <div class="row">
-                    <div class="col-lg-20">
+                    <div class="col-lg-21">
                         <h1>Subnets</h1>
                     </div>
                     <div class="col-lg-3">
+                        <at-popover placement="bottom" v-model="show" @toggle="toggleShow">
+                            <at-button type="success" hollow icon="icon-plus">Add Subnet</at-button>
+                            <template slot="content">
+                                <p>Create new Subnet</p><br>
+
+                                <at-input v-model="newSubnet.name" size="small" placeholder="Enter a descriptive name"/><br>
+                                <at-input v-model="newSubnet.subnet" size="small" placeholder="CIDR (10.0.0.0/24)"/>
+
+                                <div style="text-align: right; margin-top: 8px;">
+                                    <at-button size="smaller" @click="show = false">Cancel</at-button>
+                                    <at-button type="primary" size="smaller" @click="show = false">Save</at-button>
+                                </div>
+                            </template>
+                        </at-popover>
+
 
                     </div>
                 </div>
@@ -104,6 +119,8 @@
 
 
                 ],
+                newSubnet: [],
+                show: false,
             }
         }
     }

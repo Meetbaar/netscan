@@ -31825,6 +31825,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     mounted: function mounted() {
@@ -31896,7 +31911,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         on: {}
                     }, 'Edit Subnet')]);
                 }
-            }]
+            }],
+            newSubnet: [],
+            show: false
         };
     }
 });
@@ -31915,7 +31932,122 @@ var render = function() {
         "div",
         { staticClass: "col-lg-20" },
         [
-          _vm._m(0),
+          _c("div", { staticClass: "row" }, [
+            _vm._m(0),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "col-lg-3" },
+              [
+                _c(
+                  "at-popover",
+                  {
+                    attrs: { placement: "bottom" },
+                    on: { toggle: _vm.toggleShow },
+                    model: {
+                      value: _vm.show,
+                      callback: function($$v) {
+                        _vm.show = $$v
+                      },
+                      expression: "show"
+                    }
+                  },
+                  [
+                    _c(
+                      "at-button",
+                      {
+                        attrs: {
+                          type: "success",
+                          hollow: "",
+                          icon: "icon-plus"
+                        }
+                      },
+                      [_vm._v("Add Subnet")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "template",
+                      { slot: "content" },
+                      [
+                        _c("p", [_vm._v("Create new Subnet")]),
+                        _c("br"),
+                        _vm._v(" "),
+                        _c("at-input", {
+                          attrs: {
+                            size: "small",
+                            placeholder: "Enter a descriptive name"
+                          },
+                          model: {
+                            value: _vm.newSubnet.name,
+                            callback: function($$v) {
+                              _vm.$set(_vm.newSubnet, "name", $$v)
+                            },
+                            expression: "newSubnet.name"
+                          }
+                        }),
+                        _c("br"),
+                        _vm._v(" "),
+                        _c("at-input", {
+                          attrs: {
+                            size: "small",
+                            placeholder: "CIDR (10.0.0.0/24)"
+                          },
+                          model: {
+                            value: _vm.newSubnet.subnet,
+                            callback: function($$v) {
+                              _vm.$set(_vm.newSubnet, "subnet", $$v)
+                            },
+                            expression: "newSubnet.subnet"
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticStyle: {
+                              "text-align": "right",
+                              "margin-top": "8px"
+                            }
+                          },
+                          [
+                            _c(
+                              "at-button",
+                              {
+                                attrs: { size: "smaller" },
+                                on: {
+                                  click: function($event) {
+                                    _vm.show = false
+                                  }
+                                }
+                              },
+                              [_vm._v("Cancel")]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "at-button",
+                              {
+                                attrs: { type: "primary", size: "smaller" },
+                                on: {
+                                  click: function($event) {
+                                    _vm.show = false
+                                  }
+                                }
+                              },
+                              [_vm._v("Save")]
+                            )
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  ],
+                  2
+                )
+              ],
+              1
+            )
+          ]),
           _vm._v(" "),
           _c("hr"),
           _vm._v(" "),
@@ -31933,10 +32065,8 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-lg-20" }, [_c("h1", [_vm._v("Subnets")])]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-lg-3" })
+    return _c("div", { staticClass: "col-lg-21" }, [
+      _c("h1", [_vm._v("Subnets")])
     ])
   }
 ]
@@ -32766,7 +32896,17 @@ var render = function() {
         _vm._v(" "),
         !_vm.compact
           ? _c("div", [
-              _vm._m(0),
+              _c("div", { staticClass: "row" }, [
+                _c("div", { staticClass: "col-lg-24" }, [
+                  _c("h2", [
+                    _vm._v(
+                      "Online IPv4: " + _vm._s(_vm.subnetDetails.countedIPs)
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("hr")
+                ])
+              ]),
               _vm._v(" "),
               _c(
                 "div",
@@ -32998,7 +33138,7 @@ var render = function() {
                 "div",
                 { staticClass: "row" },
                 _vm._l(this.onlineAdresses, function(item) {
-                  return _c("div", { staticClass: "col-lg-6 " }, [
+                  return _c("div", { staticClass: "col-lg-4 " }, [
                     _c(
                       "h4",
                       { staticClass: "hostname compact", class: item.status },
@@ -33012,20 +33152,7 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-lg-24" }, [
-        _c("h2", [_vm._v("Online IPv4")]),
-        _vm._v(" "),
-        _c("hr")
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
