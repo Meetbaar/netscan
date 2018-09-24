@@ -75,8 +75,12 @@ class PrivateIPAdress extends Controller
         foreach($resultSet as $adress) {
             $adress->open_ports = json_decode($adress->open_ports, true);
             $portCollection = [];
-            $domain = explode('.',$adress->hostname);
-            $shortAdress =$domain[0];
+            if($adress->adress == $adress->hostname) {
+                $shortAdress =$adress->adress;
+            } else {
+                $domain = explode('.',$adress->hostname);
+                $shortAdress = $domain[0];
+            }
 
             foreach($adress->open_ports as $port) {
                 $portDetails = explode("/",$port);
