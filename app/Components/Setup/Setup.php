@@ -9,6 +9,7 @@
 namespace App\Components\Setup;
 
 
+use App\Components\Core\ActionLog\ActionLog;
 use App\Components\UserManagement\User\UserModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -26,13 +27,17 @@ class Setup
             'email' => 'required|unique:users|email',
             'password' => 'required|min:8',
         ]);
+        ActionLog::addLog("Starting Validation", 0);
 
         if($validatedData->fails()) {
             $this->status = false;
+            ActionLog::addLog("Validation failed", 0);
 
             $this->response['errors'] = $validatedData->errors();
 
         } else {
+            ActionLog::addLog("Validation succeeded.", 0);
+
             $this->response['user'] = SetupTasks::createUser($request->input("username"), $request->input("password"), $request->input("email"));
         }
 
