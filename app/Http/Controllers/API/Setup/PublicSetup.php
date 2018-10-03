@@ -19,7 +19,7 @@ class PublicSetup
 {
     public function postStartSetup( Request $request) {
         $setup = new Setup();
-        $doSetup = false;
+        $doSetup = true;
         $result = '';
 
 
