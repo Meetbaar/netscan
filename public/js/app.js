@@ -12858,7 +12858,7 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_1_at_ui___default.a);
 Vue.use(__WEBPACK_IMPORTED_MODULE_6__packages_askApp_askApp__["a" /* default */]);
 Vue.use(__WEBPACK_IMPORTED_MODULE_5__packages_auth_Auth_js__["a" /* default */]);
 var router = new __WEBPACK_IMPORTED_MODULE_0_vue_router__["a" /* default */]({ routes: routes });
-__WEBPACK_IMPORTED_MODULE_3_axios___default.a.defaults.baseURL = 'http://10.96.12.6/';
+__WEBPACK_IMPORTED_MODULE_3_axios___default.a.defaults.baseURL = '/';
 
 Vue.router = router;
 

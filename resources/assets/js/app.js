@@ -107,7 +107,7 @@ Vue.use(AtComponents);
 Vue.use(askApp);
 Vue.use(Auth);
 const router = new VueRouter({routes});
-axios.defaults.baseURL = 'http://10.96.12.6/';
+axios.defaults.baseURL = '/';
 
 Vue.router = router;
 
