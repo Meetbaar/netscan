@@ -125,10 +125,10 @@
                 });
             },
             calcEndTime(amount, change) {
-                if(change === 0) {
+                if(change <= 0) {
                     return "Unknown"
                 }
-                return amount/change;
+                return (amount/change)*(-1)/60+" Minutes";
             }
 
 
