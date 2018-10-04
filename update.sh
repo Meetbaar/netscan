@@ -7,7 +7,7 @@ git pull
 php composer.phar update
 php artisan migrate
 npm install
-npm run
+npm run production
 
 service supervisor start
 php artisan up
