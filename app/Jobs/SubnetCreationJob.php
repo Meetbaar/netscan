@@ -102,15 +102,11 @@ class SubnetCreationJob implements ShouldQueue
         $maxIP = ip2long($sub->getMaxHost());
         JobLog::startJob($job_id);
         for ($ip = $minIP; $ip <= $maxIP; $ip++) {
-            try {
-                dispatch((new IPCreateJob(long2ip($ip), $this->subnet->id))->onQueue("3"));
-            } catch (\Exception $exception) {
-                echo  $exception;
-            }
+            dispatch((new IPCreateJob(long2ip($ip), $this->subnet->id))->onQueue("3"));
             $currentIP = $ip-$start;
             $status = round(($currentIP/$totalItems)*100,0);
             JobLog::setProgress($job_id, $status);
         }
-
+        JobLog::endJob($job_id);
     }
 }
