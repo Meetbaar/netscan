@@ -28,8 +28,6 @@ class SubnetCreationJob implements ShouldQueue
     public function __construct(Subnet $subnet)
     {
         $this->subnet = $subnet;
-        $job_id = $this->job->getJobId();
-        JobLog::addJobLog($job_id, "Add ".$this->subnet->subnet." to database");
 
     }
 
@@ -40,6 +38,8 @@ class SubnetCreationJob implements ShouldQueue
      */
     public function handle()
     {
+        $job_id = $this->job->getJobId();
+        JobLog::addJobLog($job_id, "Add ".$this->subnet->subnet." to database");
 
         /**
          *
