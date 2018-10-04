@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\IPAdress;
 use App\JobLog;
 use App\Subnet;
 use Illuminate\Bus\Queueable;
@@ -34,8 +35,7 @@ class SubnetCreationJob implements ShouldQueue
      */
     public function handle()
     {
-        //We have to introduce a quickfix for script time here :( Will be fixed in v0.2
-        set_time_limit(0);
+
         $job_id = $this->job->getJobId();
         JobLog::addJobLog($job_id, "Add ".$this->subnet->subnet." to database");
 
@@ -50,6 +50,28 @@ class SubnetCreationJob implements ShouldQueue
         $this->subnet->save();
 
         $minIP = ip2long($sub->getMinHost());
+
+
+        /**
+         *
+         * We need to continue on where we left if we crashed the last time :(
+         *
+         */
+        $pdoPreperation = IPAdress::where('subnet', $this->subnet->id);
+        $countOfIPs = $pdoPreperation->count();
+        if($countOfIPs > 0) {
+            JobLog::addJobLog($job_id, "We crashed the last time with ".$this->subnet->subnet."!");
+
+            /**
+             *
+             * Get latest IP CREATED (not modified, it could be that the IPScanJob already ran!)
+             *
+             */
+
+            $startIP = $pdoPreperation->orderBy('created_at', 'desc')->first();
+            JobLog::addJobLog($job_id, "Continuing ".$this->subnet->subnet." with ".$startIP->adress.".");
+            $minIP = ip2long($startIP->adress);
+        }
         $maxIP = ip2long($sub->getMaxHost());
         JobLog::startJob($job_id);
         for ($ip = $minIP; $ip <= $maxIP; $ip++) {
