@@ -43,11 +43,7 @@
                     <div class="col-lg-12">
                         <h3>Queue Stats</h3><br>
 
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12">
-                                <at-table :columns="tableLayoutJobStats" :data="job"/>
+                        <at-table :columns="tableLayoutJobStats" :data="job"/>
 
 
                     </div>
