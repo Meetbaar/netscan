@@ -41,6 +41,7 @@ class PrivateSubnets extends Controller
     }
 
     public function createSubnet() {
+        return Input::all();
         $input = Input::all();
         if(!$input['name'] || !$input['subnet']) abort(400);
         $subnet = new Subnet();
