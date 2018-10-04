@@ -17,24 +17,12 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <at-table :columns="ipTableLayout" :data="ipadresses"/>
+                        <div class="row">
+                            <div class="col-lg-24">
+                                <br><h3>Queue Stats</h3><br>
 
-
-                    </div>
-                </div>
-<br>
-                <div class="row">
-                    <div class="col-lg-24">
-                        <h3>Queue Stats</h3><br>
-
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12">
-                                <at-table :columns="tableLayoutJobStats" :data="job"/>
-
-
-                    </div>
-                    <div class="col-lg-12">
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-lg-12" v-for="item in this.queues">
                                 <at-card style="width: 100%;" class="justify-content-center" :loading="cardLoading">
@@ -48,6 +36,22 @@
                                 <br>
                             </div>
                         </div>
+
+
+                    </div>
+
+                    <div class="col-lg-12">
+                        <h3>Queue Stats</h3><br>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                                <at-table :columns="tableLayoutJobStats" :data="job"/>
+
+
+                    </div>
+                    <div class="col-lg-12">
 
                     </div>
                 </div>
