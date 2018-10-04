@@ -28,6 +28,9 @@ class SubnetCreationJob implements ShouldQueue
     public function __construct(Subnet $subnet)
     {
         $this->subnet = $subnet;
+        $job_id = $this->job->getJobId();
+        JobLog::addJobLog($job_id, "Add ".$this->subnet->subnet." to database");
+
     }
 
     /**
@@ -62,8 +65,6 @@ class SubnetCreationJob implements ShouldQueue
             sleep(5);
         }
 
-        $job_id = $this->job->getJobId();
-        JobLog::addJobLog($job_id, "Add ".$this->subnet->subnet." to database");
 
         $network = explode("/", $this->subnet->subnet);
         $sub = new SubnetCalculator($network[0], $network[1]);
