@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Components\Core\ActionLog\Action;
 use App\IPAdress;
 use App\JobLog;
+use App\Jobs;
 use App\Subnet;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -36,6 +37,30 @@ class SubnetCreationJob implements ShouldQueue
      */
     public function handle()
     {
+
+        /**
+         *
+         * We're running in sort of a problem here if queue 3 is running. Easiest fix is to wait until queue 3 is empty.
+         * Result: Don't continue until queue 3 is empty
+         */
+
+        $wait = true;
+        $count = 0;
+        while($wait) {
+            if($count <100) {
+                //get count of jobs in queue 2
+
+                $jobCount = Jobs::where('queue', 3)->count();
+                if($jobCount <1) {
+                    $wait = false;
+                } else {
+                    $count = $count++;
+                }
+            }else{
+                throw new \Exception("Waiting for Queue 3 to be empty");
+            }
+            sleep(5);
+        }
 
         $job_id = $this->job->getJobId();
         JobLog::addJobLog($job_id, "Add ".$this->subnet->subnet." to database");
