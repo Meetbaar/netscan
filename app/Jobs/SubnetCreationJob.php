@@ -34,6 +34,8 @@ class SubnetCreationJob implements ShouldQueue
      */
     public function handle()
     {
+        //We have to introduce a quickfix for script time here :( Will be fixed in v0.2
+        set_time_limit(0);
         $job_id = $this->job->getJobId();
         JobLog::addJobLog($job_id, "Add ".$this->subnet->subnet." to database");
 
@@ -60,7 +62,6 @@ class SubnetCreationJob implements ShouldQueue
             $status = round(($currentIP/$totalItems)*100,0);
             JobLog::setProgress($job_id, $status);
         }
-        JobLog::endJob($job_id);
 
     }
 }
