@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Components\Core\ActionLog\Action;
 use App\IPAdress;
 use App\JobLog;
 use App\Subnet;
@@ -59,9 +60,9 @@ class SubnetCreationJob implements ShouldQueue
          */
         $pdoPreperation = IPAdress::where('subnet', $this->subnet->id);
         $countOfIPs = $pdoPreperation->count();
-        if($countOfIPs > 0) {
-            JobLog::addJobLog($job_id, "We crashed the last time with ".$this->subnet->subnet."!");
 
+        if($countOfIPs > 0) {
+            Action::logAction("We crashed the last time with ".$this->subnet->subnet."!",0)
             /**
              *
              * Get latest IP CREATED (not modified, it could be that the IPScanJob already ran!)
@@ -69,7 +70,7 @@ class SubnetCreationJob implements ShouldQueue
              */
 
             $startIP = $pdoPreperation->orderBy('created_at', 'desc')->first();
-            JobLog::addJobLog($job_id, "Continuing ".$this->subnet->subnet." with ".$startIP->adress.".");
+            Action::logAction( "Continuing ".$this->subnet->subnet." with ".$startIP->adress.".", 0);
             $minIP = ip2long($startIP->adress);
         }
         $maxIP = ip2long($sub->getMaxHost());
