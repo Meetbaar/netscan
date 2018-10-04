@@ -38,7 +38,7 @@
                         <div class="row">
                             <div class="col-lg-12" v-for="item in this.queues">
                                 <at-card style="width: 100%;" class="justify-content-center" :loading="cardLoading">
-                                    <h4 slot="title">Queue #{{ item.id}}</h4>
+                                    <h4 slot="title">Queue #{{ item.id}} <small>ETA:</small></h4>
                                     <div>
                                         <h3>Current Rate: {{item.change/2.5}}<small> Items/sec.</small></h3>
                                         <h6>Total Items: {{item.load}}</h6>

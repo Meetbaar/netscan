@@ -36,7 +36,7 @@
                                         <li><b>Used IPv4</b>: <span>{{subnetDetails.countedIPs}} <small>({{Math.round(subnetDetails.countedIPs/subnetDetails.size*1000)/10}}%)</small></span></li>
                                         <li><b># of IPv4</b>: <span>{{subnetDetails.size}}</span></li>
                                         <li><b>Creator</b>: <span>{{subnetDetails.creator_name}}</span></li>
-                                        <li><b>Creation Date</b>: <span>{{subnetDetails.created_at}}</span></li>
+                                        <li><b>Created</b>: <span>{{subnetDetails.created_at}}</span></li>
                                     </ul>
                                 </div>
                             </at-card>
