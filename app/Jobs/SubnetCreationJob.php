@@ -62,7 +62,7 @@ class SubnetCreationJob implements ShouldQueue
         $countOfIPs = $pdoPreperation->count();
 
         if($countOfIPs > 0) {
-            Action::logAction("We crashed the last time with ".$this->subnet->subnet."!",0)
+            Action::logAction("We crashed the last time with ".$this->subnet->subnet."!",0);
             /**
              *
              * Get latest IP CREATED (not modified, it could be that the IPScanJob already ran!)
