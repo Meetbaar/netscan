@@ -9,13 +9,9 @@
                 </div>
                 <hr>
                 <div class="row">
-                    <div class="col-lg-24">
+                    <div class="col-lg-12">
                         <h3>IP Stats</h3><br>
 
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12">
                         <at-table :columns="ipTableLayout" :data="ipadresses"/>
                         <div class="row">
                             <div class="col-lg-24">
