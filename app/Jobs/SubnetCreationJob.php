@@ -71,7 +71,7 @@ class SubnetCreationJob implements ShouldQueue
 
             $startIP = $pdoPreperation->orderBy('created_at', 'desc')->first();
             Action::logAction( "Continuing ".$this->subnet->subnet." with ".$startIP->adress.".", 0);
-            $minIP = ip2long($startIP->adress);
+            $minIP = ip2long($startIP->adress)+1;
         }
         $maxIP = ip2long($sub->getMaxHost());
         JobLog::startJob($job_id);
