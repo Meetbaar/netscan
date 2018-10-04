@@ -62,7 +62,7 @@ class JobLog extends Model
     static function getAllJobs($minutes = 60) {
         $returnJobs = [];
         $returnJobs[] = self::getErrorJobs($minutes,2);
-        $returnJobs[] = self::getRunningJobs($minutes,5);
+        $returnJobs[] = self::getRunningJobs($minutes,100);
         $returnJobs[] = self::getScheduledJobs($minutes,5);
         $returnJobs[] = self::getDoneJobs($minutes,3);
         return $returnJobs;
