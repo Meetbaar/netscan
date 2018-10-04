@@ -125,6 +125,9 @@
                 });
             },
             calcEndTime(amount, change) {
+                if(change === 0) {
+                    return "Unknown"
+                }
                 return amount/change;
             }
 
