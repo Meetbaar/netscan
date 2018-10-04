@@ -17,7 +17,7 @@
 
                                 <div style="text-align: right; margin-top: 8px;">
                                     <at-button size="smaller" @click="show = false">Cancel</at-button>
-                                    <at-button type="primary" size="smaller" @click="show = false">Save</at-button>
+                                    <at-button type="primary" size="smaller" @click="createSubnet">Save</at-button>
                                 </div>
                             </template>
                         </at-popover>
@@ -50,6 +50,13 @@
 
                 });
             },
+            createSubnet() {
+                this.$Loading.start();
+                let responsePromise = this.$askApp.makeProtectedPOST("api/subnets",this.newUser);
+                responsePromise.then((response)=>{
+                    console.log(response)
+                })
+            }
 
         },
         data(){

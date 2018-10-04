@@ -39,8 +39,3 @@ Route::get("reset", function () {
     $job_id = dispatch((new \App\Jobs\SubnetCreationJob($subnet))->onQueue("2"));
 
 });
-
-Route::get("testAllJobs", function () {
-    //return gethostbyaddr("134.255.244.227");
-    \App\Jobs\ReenterScanJob::dispatch()->onQueue(1);
-});

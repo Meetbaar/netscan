@@ -138,6 +138,7 @@
                 responsePromise.then((response)=>{
                     console.log(response)
                 })
+                this.$Loading.finish();
             }
         },
         data(){
