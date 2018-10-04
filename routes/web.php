@@ -23,11 +23,6 @@ Route::post("/login", function(\Illuminate\Http\Request $request ){
     }
 });
 
-Route::get("/test/", function() {
-
-
-});
-
 Route::get("reset", function () {
 
     $subnet = new \App\Subnet();

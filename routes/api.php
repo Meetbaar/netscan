@@ -34,6 +34,7 @@ Route::middleware("auth:api")->group(function(){
     Route::get("/jobs/list", "API\Dashboard\PrivateDashboard@getJobList");
     Route::get("/jobs/load", "API\Dashboard\PrivateDashboard@getQueueLoad");
     Route::get("/subnets/", "API\Subnets\PrivateSubnets@getSubnets");
+    Route::post("/subnets/", "API\Subnets\PrivateSubnets@createSubnet");
     Route::get("/subnets/{id}", "API\Subnets\PrivateSubnets@getSubnet");
     Route::get("/ips/latest/", "API\IPAdress\PrivateIPAdress@getLatestChangedIPs");
     Route::get("/ips/{subnet}/{filter?}", "API\IPAdress\PrivateIPAdress@getIPs");

@@ -52,7 +52,7 @@
             },
             createSubnet() {
                 this.$Loading.start();
-                let responsePromise = this.$askApp.makeProtectedPOST("api/subnets",this.newUser);
+                let responsePromise = this.$askApp.makeProtectedPOST("api/subnets",this.newSubnet);
                 responsePromise.then((response)=>{
                     console.log(response)
                 })

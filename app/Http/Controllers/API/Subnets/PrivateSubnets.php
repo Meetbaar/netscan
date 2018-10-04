@@ -13,9 +13,12 @@ use App\Components\API\APIResponseBuilder;
 use App\Components\UserManagement\User\UserModel;
 use App\Http\Controllers\Controller;
 use App\IPAdress;
+use App\Jobs\SubnetCreationJob;
 use App\Subnet;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
 
 class PrivateSubnets extends Controller
 {
@@ -35,6 +38,21 @@ class PrivateSubnets extends Controller
         $subnetList->countedIPs = $ipCount->count();
         $api = new APIResponseBuilder();
         return $api->makePositiveResponse($subnetList)->makeResponse();
+    }
+
+    public function createSubnet() {
+        $input = Input::all();
+        if(!$input['name'] || !$input['subnet']) abort(400);
+        $subnet = new Subnet();
+        $subnet->name = $input['name'];
+        $subnet->subnet = $input['subnet'];
+        $subnet->creator = Auth::user()->id;
+        $subnet->save();
+
+        $job_id = dispatch((new SubnetCreationJob($subnet))->onQueue("2"));
+
+        $response = new APIResponseBuilder();
+        $response->makePositiveResponse($subnet)->makeResponse();
     }
 
 }
