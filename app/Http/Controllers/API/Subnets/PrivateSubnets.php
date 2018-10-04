@@ -46,7 +46,7 @@ class PrivateSubnets extends Controller
         $subnet = new Subnet();
         $subnet->name = $input['name'];
         $subnet->subnet = $input['subnet'];
-        $subnet->creator = $request->user()->id;
+        $subnet->creator = $request->user()->uid;
         $subnet->save();
 
         $job_id = dispatch((new SubnetCreationJob($subnet))->onQueue("2"));
