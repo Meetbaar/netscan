@@ -127,7 +127,10 @@
 
 
                 ],
-                newSubnet: [],
+                newSubnet: {
+                    name: "",
+                    subnet: ""
+                },
                 show: false,
             }
         }
