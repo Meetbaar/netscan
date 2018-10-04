@@ -40,7 +40,7 @@ class JobLog extends Model
 
     static function getRunningJobs($minutes = 60, $limit = 100)
     {
-        $results = self::where('status', "running")->orderBy('updated_at', 'desc')->take($limit)->get();
+        $results = self::where('status', "running")->orderBy('progress', 'desc')->take($limit)->get();
         return $results;
     }
     static function getDoneJobs($minutes = 60, $limit = 100)
