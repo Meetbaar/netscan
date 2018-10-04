@@ -40,13 +40,13 @@ class PrivateSubnets extends Controller
         return $api->makePositiveResponse($subnetList)->makeResponse();
     }
 
-    public function createSubnet() {
+    public function createSubnet(Request $request) {
         $input = Input::all();
         if(!$input['name'] || !$input['subnet']) abort(400);
         $subnet = new Subnet();
         $subnet->name = $input['name'];
         $subnet->subnet = $input['subnet'];
-        $subnet->creator = Auth::user()->id;
+        $subnet->creator = $request->user()->id;
         $subnet->save();
 
         $job_id = dispatch((new SubnetCreationJob($subnet))->onQueue("2"));
