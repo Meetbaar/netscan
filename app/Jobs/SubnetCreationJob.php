@@ -51,7 +51,7 @@ class SubnetCreationJob implements ShouldQueue
         $this->subnet->save();
 
         $minIP = ip2long($sub->getMinHost());
-
+        $start = $minIP;
 
         /**
          *
@@ -81,7 +81,7 @@ class SubnetCreationJob implements ShouldQueue
             } catch (\Exception $exception) {
                 echo  $exception;
             }
-            $currentIP = $ip-$minIP;
+            $currentIP = $ip-$start;
             $status = round(($currentIP/$totalItems)*100,0);
             JobLog::setProgress($job_id, $status);
         }
