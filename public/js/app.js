@@ -32494,15 +32494,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.showUserAdd = false;
         },
         createUser: function createUser() {
+            var _this2 = this;
+
             this.$Loading.start();
             var responsePromise = this.$askApp.makeProtectedPOST("api/user", this.newUser);
-            responsePromise.then(function (response) {
-                console.log(response);
+            responsePromise.then(function (data) {
+                _this2.$Message.success("User " + _this2.newUser.username + " successfully created!");
+                _this2.loadData();
+                _this2.closeCreate();
+                _this2.$Loading.finish();
+            }).catch(function (error) {
+                _this2.$Message.error("There was an error communicating with the backend. Please try again later.");
+                console.log(error);
+                _this2.$Loading.finish();
             });
         }
     },
     data: function data() {
-        var _this2 = this;
+        var _this3 = this;
 
         return {
             columns: [{
@@ -32527,7 +32536,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         },
                         on: {
                             click: function click() {
-                                _this2.profile(params.item);
+                                _this3.profile(params.item);
                             }
                         }
                     }, 'View Profile'), h('AtButton', {
@@ -32537,7 +32546,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         },
                         on: {
                             click: function click() {
-                                _this2.$Message(params.item.email);
+                                _this3.$Message(params.item.email);
                             }
                         }
                     }, 'View Address')]);
@@ -32949,10 +32958,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this.$Message.error("There was an error communicating with the backend. Please try again later.");
                 console.log(error);
             });
+        },
+        createSubnet: function createSubnet() {
+            var _this2 = this;
+
+            this.$Loading.start();
+            var responsePromise = this.$askApp.makeProtectedPOST("api/subnets", this.newSubnet);
+            responsePromise.then(function (data) {
+                _this2.$Message.success("Subnet " + _this2.newSubnet.name + " successfully created!");
+                _this2.loadSubnet();
+                _this2.$Loading.finish();
+            }).catch(function (error) {
+                _this2.$Message.error("There was an error communicating with the backend. Please try again later.");
+                console.log(error);
+                _this2.$Loading.finish();
+            });
+        },
+        toggleShow: function toggleShow() {
+            this.show = !this.show;
         }
     },
     data: function data() {
-        var _this2 = this;
+        var _this3 = this;
 
         return {
             subnets: [],
@@ -32988,7 +33015,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         },
                         on: {
                             click: function click() {
-                                _this2.$router.push({ path: "/subnets/" + params.item.id });
+                                _this3.$router.push({ path: "/subnets/" + params.item.id });
                             }
                         },
                         style: {
@@ -33004,7 +33031,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     }, 'Edit Subnet')]);
                 }
             }],
-            newSubnet: [],
+            newSubnet: {
+                name: "",
+                subnet: ""
+            },
             show: false
         };
     }
@@ -33119,11 +33149,7 @@ var render = function() {
                               "at-button",
                               {
                                 attrs: { type: "primary", size: "smaller" },
-                                on: {
-                                  click: function($event) {
-                                    _vm.show = false
-                                  }
-                                }
+                                on: { click: _vm.createSubnet }
                               },
                               [_vm._v("Save")]
                             )
@@ -33648,7 +33674,7 @@ var render = function() {
                               ]),
                               _vm._v(" "),
                               _c("li", [
-                                _c("b", [_vm._v("Creation Date")]),
+                                _c("b", [_vm._v("Created")]),
                                 _vm._v(": "),
                                 _c("span", [
                                   _vm._v(_vm._s(_vm.subnetDetails.created_at))
@@ -33958,10 +33984,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     mounted: function mounted() {
@@ -34022,6 +34044,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this3.$Message.error("There was an error communicating with the backend. Please try again later.");
                 console.log(error);
             });
+        },
+        calcEndTime: function calcEndTime(amount, change) {
+            if (change >= 0) {
+                return "Unknown";
+            }
+            return Math.round(amount / change * -1 / 60) + " Minutes";
         }
     },
     data: function data() {
@@ -34121,31 +34149,88 @@ var render = function() {
         _vm._m(0),
         _vm._v(" "),
         _c("hr"),
-        _vm._v(" "),
-        _vm._m(1),
-        _vm._v(" "),
+        _vm._v("w\n            "),
         _c("div", { staticClass: "row" }, [
           _c(
             "div",
             { staticClass: "col-lg-12" },
             [
+              _c("h3", [_vm._v("IP Stats")]),
+              _c("br"),
+              _vm._v(" "),
               _c("at-table", {
                 attrs: { columns: _vm.ipTableLayout, data: _vm.ipadresses }
-              })
+              }),
+              _vm._v(" "),
+              _vm._m(1),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "row" },
+                _vm._l(this.queues, function(item) {
+                  return _c(
+                    "div",
+                    { staticClass: "col-lg-12" },
+                    [
+                      _c(
+                        "at-card",
+                        {
+                          staticClass: "justify-content-center",
+                          staticStyle: { width: "100%" },
+                          attrs: { loading: _vm.cardLoading }
+                        },
+                        [
+                          _c(
+                            "h4",
+                            { attrs: { slot: "title" }, slot: "title" },
+                            [
+                              _vm._v("Queue #" + _vm._s(item.id) + " "),
+                              _c("small", [
+                                _vm._v(
+                                  "ETA: " +
+                                    _vm._s(
+                                      _vm.calcEndTime(
+                                        item.load,
+                                        item.change / 2.5
+                                      )
+                                    )
+                                )
+                              ])
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c("div", [
+                            _c("h3", [
+                              _vm._v(
+                                "Current Rate: " + _vm._s(item.change / 2.5)
+                              ),
+                              _c("small", [_vm._v(" Items/sec.")])
+                            ]),
+                            _vm._v(" "),
+                            _c("h6", [
+                              _vm._v("Total Items: " + _vm._s(item.load))
+                            ])
+                          ])
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("br")
+                    ],
+                    1
+                  )
+                })
+              )
             ],
             1
-          )
-        ]),
-        _vm._v(" "),
-        _c("br"),
-        _vm._v(" "),
-        _vm._m(2),
-        _vm._v(" "),
-        _c("div", { staticClass: "row" }, [
+          ),
+          _vm._v(" "),
           _c(
             "div",
             { staticClass: "col-lg-12" },
             [
+              _c("h3", [_vm._v("Queue Stats")]),
+              _c("br"),
+              _vm._v(" "),
               _c("at-table", {
                 attrs: { columns: _vm.tableLayoutJobStats, data: _vm.job }
               })
@@ -34153,54 +34238,12 @@ var render = function() {
             1
           ),
           _vm._v(" "),
-          _c("div", { staticClass: "col-lg-12" }, [
-            _c(
-              "div",
-              { staticClass: "row" },
-              _vm._l(this.queues, function(item) {
-                return _c(
-                  "div",
-                  { staticClass: "col-lg-12" },
-                  [
-                    _c(
-                      "at-card",
-                      {
-                        staticClass: "justify-content-center",
-                        staticStyle: { width: "100%" },
-                        attrs: { loading: _vm.cardLoading }
-                      },
-                      [
-                        _c("h4", { attrs: { slot: "title" }, slot: "title" }, [
-                          _vm._v("Queue #" + _vm._s(item.id))
-                        ]),
-                        _vm._v(" "),
-                        _c("div", [
-                          _c("h3", [
-                            _vm._v(
-                              "Current Rate: " + _vm._s(item.change / 2.5)
-                            ),
-                            _c("small", [_vm._v(" Items/sec.")])
-                          ]),
-                          _vm._v(" "),
-                          _c("h6", [
-                            _vm._v("Total Items: " + _vm._s(item.load))
-                          ])
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c("br")
-                  ],
-                  1
-                )
-              })
-            )
-          ])
+          _c("div", { staticClass: "col-lg-12" })
         ])
       ])
     ]),
     _vm._v(" "),
-    _vm._m(3)
+    _vm._m(2)
   ])
 }
 var staticRenderFns = [
@@ -34220,17 +34263,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "row" }, [
       _c("div", { staticClass: "col-lg-24" }, [
-        _c("h3", [_vm._v("IP Stats")]),
-        _c("br")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-lg-24" }, [
+        _c("br"),
         _c("h3", [_vm._v("Queue Stats")]),
         _c("br")
       ])

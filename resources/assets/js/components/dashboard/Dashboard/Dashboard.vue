@@ -7,7 +7,7 @@
                         <h1>System Dashboard</h1>
                     </div>
                 </div>
-                <hr>
+                <hr>w
                 <div class="row">
                     <div class="col-lg-12">
                         <h3>IP Stats</h3><br>

@@ -51,11 +51,22 @@
                 });
             },
             createSubnet() {
+                this.$Loading.start();
                 let responsePromise = this.$askApp.makeProtectedPOST("api/subnets",this.newSubnet);
-                console.log(this.newSubnet);
-                responsePromise.then((response)=>{
-                    console.log(response)
-                })
+                responsePromise.then((data)=>{
+                    this.$Message.success("Subnet "+this.newSubnet.name+" successfully created!");
+                    this.loadSubnet();
+                    this.$Loading.finish();
+
+                }).catch((error)=>{
+                    this.$Message.error("There was an error communicating with the backend. Please try again later.")
+                    console.log(error);
+                    this.$Loading.finish();
+
+                });
+            },
+            toggleShow() {
+                this.show = !this.show;
             }
 
         },

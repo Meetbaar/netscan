@@ -135,10 +135,18 @@
             createUser(){
                 this.$Loading.start();
                 let responsePromise = this.$askApp.makeProtectedPOST("api/user",this.newUser);
-                responsePromise.then((response)=>{
-                    console.log(response)
-                })
-                this.$Loading.finish();
+                responsePromise.then((data)=>{
+                    this.$Message.success("User "+this.newUser.username+" successfully created!");
+                    this.loadData();
+                    this.closeCreate();
+                    this.$Loading.finish();
+
+                }).catch((error)=>{
+                    this.$Message.error("There was an error communicating with the backend. Please try again later.")
+                    console.log(error);
+                    this.$Loading.finish();
+
+                });
             }
         },
         data(){
