@@ -56,6 +56,10 @@ Also, your webserver has to support URL rewriting. Please check the internet for
 
     In this project, there is a supervisor-example Configuration file. You may need to change the paths.
     
+8. Create the first user
+
+    This is currently a simple curl:
+    ``curl --insecure -XPOST -d '{"username":"<USERNAME>","password":"<PASSWORD>", "email": "<EMAIL>"}' 'http://<IP>/api/setup'``
 
 ## Used software
 
