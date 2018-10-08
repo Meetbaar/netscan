@@ -42,7 +42,11 @@ class PrivateSubnets extends Controller
 
     public function createSubnet(Request $request) {
         $input = Input::all();
-        if(!$input['name'] || !$input['subnet']) abort(400);
+        $validatorRules = [
+            'subnet'=>"required",
+            'name'=>"required|unique:ip_subnets|min:6",
+        ];
+        $validatedData = $request->validate($validatorRules);
         $subnet = new Subnet();
         $subnet->name = $input['name'];
         $subnet->subnet = $input['subnet'];

@@ -12,8 +12,8 @@
                             <template slot="content">
                                 <p>Create new Subnet</p><br>
 
-                                <at-input v-model="newSubnet.name" size="small" placeholder="Enter a descriptive name"/><br>
-                                <at-input v-model="newSubnet.subnet" size="small" placeholder="CIDR (10.0.0.0/24)"/>
+                                <at-input v-model="newSubnet.name" v-bind:status="fields.name.status" size="small" placeholder="Enter a descriptive name"/><br>
+                                <at-input v-model="newSubnet.subnet" v-bind:status="fields.subnet.status" size="small" placeholder="CIDR (10.0.0.0/24)"/>
 
                                 <div style="text-align: right; margin-top: 8px;">
                                     <at-button size="smaller" @click="show = false">Cancel</at-button>
@@ -52,6 +52,9 @@
             },
             createSubnet() {
                 this.$Loading.start();
+                for(let field in this.fields) {
+                    this.fields[field].status = "";
+                }
                 let responsePromise = this.$askApp.makeProtectedPOST("api/subnets",this.newSubnet);
                 responsePromise.then((data)=>{
                     this.$Message.success("Subnet "+this.newSubnet.name+" successfully created!");
@@ -59,11 +62,21 @@
                     this.$Loading.finish();
 
                 }).catch((error)=>{
-                    this.$Message.error("There was an error communicating with the backend. Please try again later.")
-                    console.log(error);
+                    if(error.response != null) {
+                        this.$Message.error(error.response.data.message)
+                        for(let name in error.response.data.errors)
+                        {
+                            this.fields[name].status="error"
+
+                        }
+                    }else {
+                        this.$Message.error("There was an error communicating with the backend. Please try again later.")
+
+                    }
                     this.$Loading.finish();
 
                 });
+
             },
             toggleShow() {
                 this.show = !this.show;
@@ -142,6 +155,14 @@
                     subnet: ""
                 },
                 show: false,
+                fields: {
+                    subnet: {
+                        status: ""
+                    },
+                    name: {
+                        status: ""
+                    }
+                }
             }
         }
     }
