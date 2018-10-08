@@ -18,7 +18,7 @@ Also, your webserver has to support URL rewriting. Please check the internet for
 
 1. First, download the sourcecode and change ownership to webserver-User.
 
-   ``git pull https://github.com/pasterntt/netscan.git /var/www/html/``
+   ``git clone https://github.com/pasterntt/netscan.git /var/www/html/``
    
    ``chown -R www-data:www-data /var/www/html/``
 
