@@ -32963,14 +32963,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this2 = this;
 
             this.$Loading.start();
+            for (var field in this.fields) {
+                this.fields[field].status = "";
+            }
             var responsePromise = this.$askApp.makeProtectedPOST("api/subnets", this.newSubnet);
             responsePromise.then(function (data) {
                 _this2.$Message.success("Subnet " + _this2.newSubnet.name + " successfully created!");
                 _this2.loadSubnet();
                 _this2.$Loading.finish();
             }).catch(function (error) {
-                _this2.$Message.error("There was an error communicating with the backend. Please try again later.");
-                console.log(error);
+                if (error.response != null) {
+                    _this2.$Message.error(error.response.data.message);
+                    for (var name in error.response.data.errors) {
+                        _this2.fields[name].status = "error";
+                    }
+                } else {
+                    _this2.$Message.error("There was an error communicating with the backend. Please try again later.");
+                }
                 _this2.$Loading.finish();
             });
         },
@@ -33035,7 +33044,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 name: "",
                 subnet: ""
             },
-            show: false
+            show: false,
+            fields: {
+                subnet: {
+                    status: ""
+                },
+                name: {
+                    status: ""
+                }
+            }
         };
     }
 });
@@ -33096,6 +33113,7 @@ var render = function() {
                         _vm._v(" "),
                         _c("at-input", {
                           attrs: {
+                            status: _vm.fields.name.status,
                             size: "small",
                             placeholder: "Enter a descriptive name"
                           },
@@ -33111,6 +33129,7 @@ var render = function() {
                         _vm._v(" "),
                         _c("at-input", {
                           attrs: {
+                            status: _vm.fields.subnet.status,
                             size: "small",
                             placeholder: "CIDR (10.0.0.0/24)"
                           },
@@ -34149,7 +34168,7 @@ var render = function() {
         _vm._m(0),
         _vm._v(" "),
         _c("hr"),
-        _vm._v("w\n            "),
+        _vm._v(" "),
         _c("div", { staticClass: "row" }, [
           _c(
             "div",
