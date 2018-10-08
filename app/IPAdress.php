@@ -17,7 +17,7 @@ class IPAdress extends Model
             $ip->lastFound = time();
         }
         $ip->save();
-
+        return $ip;
     }
 
     static function interpretPort($text) {

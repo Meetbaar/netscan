@@ -30,14 +30,14 @@ class ReenterScanJob implements ShouldQueue
      */
     public function handle()
     {
-        $ipsToReindex = IPAdress::where('status', 'up')->orWhere('lastFound', ">", time()-360)->get();
+        $ipsToReindex = IPAdress::where('status', 'up')->orWhere('lastFound', ">", time()-3600)->get();
         foreach($ipsToReindex as $ip) {
             $queueOffset = rand(0,1);
 
-            dispatch((new IPScanJob($ip))->onQueue(2+$queueOffset));
+            dispatch((new IPScanJob($ip))->onQueue(3+$queueOffset));
 
         }
 
-        self::dispatch()->onQueue(2)->delay(now()->addMinutes(30));
+        self::dispatch()->onQueue(2)->delay(now()->addMinutes(60));
     }
 }

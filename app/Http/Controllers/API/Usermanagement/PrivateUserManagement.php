@@ -17,6 +17,13 @@ use Illuminate\Http\Request;
 class PrivateUserManagement extends Controller
 {
     public function postUserCreate(Request $request) {
+
+        $validatorRules = [
+            'username'=>"required|unique:users|min:6",
+            'email'=>"required|email|unique:users|min:6",
+            'password'=>"required|min:8",
+        ];
+        $validatedData = $request->validate($validatorRules);
         $user = UserModel::createUser(
             $request->input("username"),
             $request->input("password"),
