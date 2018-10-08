@@ -64,7 +64,7 @@ class IPScanJob implements ShouldQueue
             }
             $hostname = gethostbyaddr($ip);
 
-            $this->ip = \App\IPAdress::updateIP($this->ip->id, $data['ports'], $data['status'], $hostname);
+            $this->ip = IPAdress::updateIP($this->ip->id, $data['ports'], $data['status'], $hostname);
 
             //Reschedule next check
             $queueOffset = rand(0,1);
@@ -72,9 +72,9 @@ class IPScanJob implements ShouldQueue
 
             if($this->ip->status == "up" || $this->ip->lastFound > time()-3600) {
 
-                self::dispatch($this->ip)->onQueue(2+$queueOffset)->delay(now()->addMinutes(10));
+                self::dispatch($this->ip)->onQueue(4+$queueOffset)->delay(now()->addMinutes(10));
             } else {
-                self::dispatch($this->ip)->onQueue(2+$queueOffset)->delay(now()->addHours(6));
+                self::dispatch($this->ip)->onQueue(4+$queueOffset)->delay(now()->addHours(6));
 
             }
 
