@@ -1,0 +1,49 @@
+[program:laravel-queue-1]
+process_name=%(program_name)s_%(process_num)02d
+command=php /var/www/html/artisan queue:work --queue=1
+autostart=true
+autorestart=true
+user=www-data
+numprocs=8
+redirect_stderr=true
+stdout_logfile=/var/log/netscan/workers/1.log
+
+[program:laravel-queue-2]
+process_name=%(program_name)s_%(process_num)02d
+command=php /var/www/html/artisan queue:work --queue=2
+autostart=true
+autorestart=true
+user=www-data
+numprocs=8
+redirect_stderr=true
+stdout_logfile=/var/log/netscan/workers/2.log
+
+[program:laravel-queue-3]
+process_name=%(program_name)s_%(process_num)02d
+command=php /var/www/html/artisan queue:work --queue=3
+autostart=true
+autorestart=true
+user=www-data
+numprocs=8
+redirect_stderr=true
+stdout_logfile=/var/log/netscan/workers/3.log
+
+[program:laravel-queue-4]
+process_name=%(program_name)s_%(process_num)02d
+command=php /var/www/html/artisan queue:work --queue=4
+autostart=true
+autorestart=true
+user=www-data
+numprocs=8
+redirect_stderr=true
+stdout_logfile=/var/log/netscan/workers/4.log
+
+[program:laravel-queue-5]
+process_name=%(program_name)s_%(process_num)02d
+command=php /var/www/html/artisan queue:work --queue=5
+autostart=true
+autorestart=true
+user=www-data
+numprocs=8
+redirect_stderr=true
+stdout_logfile=/var/log/netscan/workers/5.log
